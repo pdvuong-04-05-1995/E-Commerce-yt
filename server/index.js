@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 import dbConnect from "./config/dbconnect";
+import authRoute from "./routes/authRoutes";
 
 const app = express();
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 dbConnect();
 
 // routes
+app.use("/api", authRoute);
 
 app.use("/", (req, res) => {
   res.send("Hello World!");
