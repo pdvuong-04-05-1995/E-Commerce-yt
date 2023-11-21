@@ -8,10 +8,10 @@ import {
 const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 
 const router = express.Router();
-router.get("/", [verifyAccessToken, isAdmin], getUsers);
-router.delete("/", [verifyAccessToken, isAdmin], deleteUser);
-router.put("/current", [verifyAccessToken], updateUser);
-router.put("/:uid", [verifyAccessToken, isAdmin], updateUserByAdmin);
+router.get("/user", [verifyAccessToken, isAdmin], getUsers);
+router.delete("/user", [verifyAccessToken, isAdmin], deleteUser);
+router.put("/user/current", [verifyAccessToken], updateUser);
+router.put("/user/:uid", [verifyAccessToken, isAdmin], updateUserByAdmin);
 
 export default router;
 // CRUD | Create - Read - Update - Delete | POST - GET - PUT - DELETEeee
