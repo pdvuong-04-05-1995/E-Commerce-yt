@@ -1,4 +1,5 @@
 import User from "../models/userModels";
+import { generateAccessToken, generateRefreshToken } from "../middlewares/jwt";
 import crypto from "crypto";
 import asyncHandler from "express-async-handler";
 
@@ -37,9 +38,26 @@ export const login = asyncHandler(async (req, res) => {
   const response = await User.findOne({ email });
 
   if (response && (await response.isCorrectPassword(password))) {
-    const { password, role, ...userData } = response;
+    // Tách password và role ra khỏi response
+    const { password, role, ...userData } = response.toObject();
+    // Tạo access token
+    const accessToken = generateAccessToken(response._id, role);
+    // Tạo refresh token
+    const newRefreshToken = generateRefreshToken(response._id);
+    // Lưu refresh token vào database
+    await User.findByIdAndUpdate(
+      response._id,
+      { refreshToken: newRefreshToken },
+      { new: true }
+    );
+    // Lưu refresh token vào cookie
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     return res.status(200).json({
       sucess: true,
+      accessToken,
       userData,
     });
   } else {
