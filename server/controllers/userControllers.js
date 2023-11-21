@@ -1,4 +1,5 @@
 import User from "../models/userModels";
+import asyncHandler from "express-async-handler";
 
 export const getUsers = asyncHandler(async (req, res) => {
   const response = await User.find().select("-refreshToken -password -role");
