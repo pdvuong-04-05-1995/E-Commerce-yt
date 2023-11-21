@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
+import initRoutes from "./routes/index";
 import dbConnect from "./config/dbconnect";
-import authRoute from "./routes/authRoutes";
 
 const app = express();
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 dbConnect();
 
 // routes
-app.use("/api", authRoute);
+initRoutes(app);
 
 app.use("/", (req, res) => {
   res.send("Hello World!");
