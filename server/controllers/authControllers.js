@@ -2,6 +2,7 @@ import User from "../models/userModels";
 import { generateAccessToken, generateRefreshToken } from "../middlewares/jwt";
 import crypto from "crypto";
 import asyncHandler from "express-async-handler";
+import { sendMail } from './../ultils/sendMail';
 
 export const register = asyncHandler(async (req, res) => {
   const { email, password, firstname, lastname } = req.body;
